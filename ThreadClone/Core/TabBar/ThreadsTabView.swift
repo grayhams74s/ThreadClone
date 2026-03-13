@@ -13,8 +13,8 @@ struct ThreadsTabView: View {
     @State private var showCreatedThreadView = false
     @State private var previousTab = 0
     @State private var viewModel = CreateThreadViewModel()
-    
-    
+
+        
     var body: some View {
         ZStack(alignment: .bottom) {
             tabViewUI

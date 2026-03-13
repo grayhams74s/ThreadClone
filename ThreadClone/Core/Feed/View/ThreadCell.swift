@@ -6,31 +6,37 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct ThreadCell: View {
     
-    let user: User
-    
+    let thread: Thread
+    private var dateText: String {
+        thread.timestamp.dateValue().formatted(date: .numeric, time: .shortened)
+    }
+
+
     
     
     var body: some View {
         VStack {
             HStack(alignment: .top) {
                 
-                CircularProfileImage(profilepic: user.profileImage ?? "")
+                CircularProfileImage(profilepic: thread.User?.profileImage ?? "person-1")
                 
                 
                 VStack (alignment: .leading, spacing: 4){
                     HStack{
-                        Text(user.username)
+                        Text(thread.User?.username ?? "Unkown")
                             .font(.footnote)
                             .fontWeight(.semibold)
                         
                         Spacer()
                         
-                        Text("10m")
+                        Text(dateText)
                             .font(.caption)
-                            .foregroundStyle(Color.gray)
+                            .foregroundStyle(.gray)
                         
                         Button {
                             
@@ -41,7 +47,7 @@ struct ThreadCell: View {
                         
 
                     }
-                    Text("SADASDSADSA")
+                    Text(thread.caption)
                         .font(.footnote)
                         .multilineTextAlignment(.leading)
                     
@@ -85,5 +91,10 @@ struct ThreadCell: View {
 }
 
 #Preview {
-    ThreadCell(user: User.mockUsers)
+    ThreadCell(thread: Thread(
+        ownerUid: "123",
+        caption: "Hello world",
+        timestamp: Timestamp(date: Date()),
+        likes: 0
+    ))
 }

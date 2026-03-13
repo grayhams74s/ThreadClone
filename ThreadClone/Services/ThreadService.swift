@@ -16,4 +16,11 @@ struct ThreadService {
         guard let threadData = try? Firestore.Encoder().encode(thread) else { return }
         try await Firestore.firestore().collection("thread").addDocument(data: threadData)
     }
+    
+    static func fetchThreads() async throws -> [Thread] {
+        let query = Firestore.firestore().collection("thread").order(by: "timestamp", descending: true)
+        let snapshot = try await query.getDocuments()
+        let thread = snapshot.documents.compactMap({ try? $0.data(as: Thread.self)})
+        return thread
+    }
 }

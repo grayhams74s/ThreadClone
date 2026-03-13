@@ -9,17 +9,19 @@ import SwiftUI
 
 struct FeedView: View {
     
-    @State var viewModel = ExploreViewModel()
+    @State var viewModel = FeedViewModel()
     
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                ForEach(viewModel.users) { user in
-                    ThreadCell(user: user)
+                LazyVStack {
+                    ForEach(viewModel.threads) { thread in
+                        ThreadCell(thread: thread)
+                    }
                 }
             }
             .refreshable {
-                print("Refreshed!")
+                Task { try await viewModel.fetchThreads() }
             }
             .navigationTitle("Threads")
             .navigationBarTitleDisplayMode(.inline)
